@@ -32,6 +32,18 @@ See [Makefile](./Makefile) for compiling and linking example.
 
 See [example_1](./example_1.c), [example_2](./example_2.c), and [example_3](./example_3.c) for code examples.
 
+## Run Examples
+
+1. Clone the repository and cd into the directory.
+2. Run `make` to compile the C code.
+3. `./example_1` to run the first example.
+4. `./example_2` to run the second example.
+5. `./example_3` to run the third example.
+
+Or just open in Gitpod:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JacobLinCool/C-Helper)
+
 ## Features
 
 - Include Common Header Files
@@ -67,11 +79,3 @@ See [example_1](./example_1.c), [example_2](./example_2.c), and [example_3](./ex
 - Function Macros for Execution Time Measurement
   - `TIME_START()` - Returns a `struct timespec` representing the start time
   - `TIME_CHECK(start)` - Returns the time elapsed since `start`, in milliseconds
-
-## Run Examples
-
-1. Clone the repository and cd into the directory.
-2. Run `make` to compile the C code.
-3. `./example_1` to run the first example.
-4. `./example_2` to run the second example.
-5. `./example_3` to run the third example.
