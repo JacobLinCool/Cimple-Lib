@@ -2,7 +2,7 @@
  * @file helper.h
  * @author JacobLinCool (jacoblincool@gmail.com)
  * @brief A helper header file for C learners.
- * @version 1.0.0
+ * @version 1.1.0
  * @date 2022-01-11
  * @copyright Copyright (c) 2022 JacobLinCool (Released under the MIT License)
  */
@@ -19,6 +19,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <errno.h>
+#include <assert.h>
 // #endregion
 
 // #region Type Alias for Standard Types.
