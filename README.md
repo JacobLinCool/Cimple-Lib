@@ -47,6 +47,8 @@ Or just open in Gitpod:
 ## Features
 
 - Include Common Header Files
+  - `assert.h` - `assert`, for debugging
+  - `errno.h` - Error codes
   - `inttypes.h` - `PRId64` and friends
   - `math.h` - Math functions
   - `stdbool.h` - `true` and `false`
