@@ -1,6 +1,6 @@
 // Copyright (c) JacobLinCool
-#include "helper.h"
 #define DEBUG 1
+#include "helper.h"
 
 i64 climb_stairs(i64 n) {
     if (n <= 2) {

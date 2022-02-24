@@ -10,16 +10,15 @@ It also helps me to learn how to use macros in C.
 
 ### Single File
 
-Just copy and paste all code in `helper.c` to the beginning of your C file.
+Just copy and paste all code in `helper.h` to the beginning of your C file.
 
 ### Better Usage
 
-Download and put the `helper.h` header file in your project's directory.
+Download and put the `helper.h` header file in your project's directory, then include it in your file.
 
 ```c
+#define DEBUG 1 // Enable debug mode, 0 to disable. The debug mode is off if you do not define it.
 #include "helper.h"
-// You MUST define DEBUG:
-#define DEBUG 1 // Enable debug mode, or 0 to disable
 
 int main() {
     printf("Hello, world!\n");
@@ -28,9 +27,9 @@ int main() {
 }
 ```
 
-See [Makefile](./Makefile) for compiling and linking example.
+See [Makefile](./Makefile) for compiling example, actually you do not need to worry about that.
 
-See [example_1](./example_1.c), [example_2](./example_2.c), and [example_3](./example_3.c) for code examples.
+See [example_1](./example_1.c), [example_2](./example_2.c), [example_3](./example_3.c), and [example_4](./example_4.c) for code examples.
 
 ## Run Examples
 
@@ -39,6 +38,7 @@ See [example_1](./example_1.c), [example_2](./example_2.c), and [example_3](./ex
 3. `./example_1` to run the first example.
 4. `./example_2` to run the second example.
 5. `./example_3` to run the third example.
+6. `./example_4` to run the fourth example.
 
 Or just open in Gitpod:
 
@@ -75,9 +75,9 @@ Or just open in Gitpod:
   - `ARRAY_SUM(arr)` - Returns the sum of all values in an array
   - `ARRAY_AVG(arr)` - Returns the average of all values in an array
 - Function Macros for Debugging
-  - `DEBUG_PRINT` - like `printf`, but only prints when `DEBUG` is `1`
-  - `DEBUG_PRINT_ARRAY` - Print an array easily
-  - `DEBUG_PRINT_MEMORY` - Print the memory layout around a pointer
+  - `DEBUG_PRINT(fmt, ...)` - like `printf`, but only prints when `DEBUG` is `1`
+  - `DEBUG_PRINT_ARRAY(arr, from, to)` - Print an array easily
+  - `DEBUG_PRINT_MEMORY(ptr, from, to)` - Print the memory layout around a pointer
 - Function Macros for Execution Time Measurement
   - `TIME_START()` - Returns a `struct timespec` representing the start time
   - `TIME_CHECK(start)` - Returns the time elapsed since `start`, in milliseconds

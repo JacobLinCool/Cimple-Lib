@@ -1,6 +1,6 @@
 // Copyright (c) JacobLinCool
-#include "helper.h"
 #define DEBUG 1
+#include "helper.h"
 
 int main() {
     i64 arr[10] = { 0 };
