@@ -2,7 +2,7 @@
  * @file helper.h
  * @author JacobLinCool (jacoblincool@gmail.com)
  * @brief A helper header file for C learners.
- * @version 1.1.0
+ * @version 1.2.0
  * @date 2022-01-11
  * @copyright Copyright (c) 2022 JacobLinCool (Released under the MIT License)
  */
@@ -131,6 +131,25 @@
     _diff; \
 })
 // #endregion
+
+// #region Function Macros for Exception Handling.
+#define THROW(fmt, ...) ({ \
+    fprintf(stderr, "\033[91m[ERROR]\033[0m " fmt, ##__VA_ARGS__); \
+    if (DEBUG) { \
+        fprintf(stderr, "\033[91m[ERROR]\033[0m %s : %d\n", __FILE__, __LINE__); \
+    } \
+    exit(EXIT_FAILURE); \
+})
+#define THROW_IF(cond, fmt, ...) ({ \
+    if (cond) { \
+        THROW(fmt, ##__VA_ARGS__); \
+    } \
+})
+// #endregion
+
+#ifndef DEBUG
+#define DEBUG 0
+#endif
 
 #endif // JACOB_HELPER_H
 // Any application that can be written in JavaScript, will eventually be written in JavaScript.

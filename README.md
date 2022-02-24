@@ -81,3 +81,6 @@ Or just open in Gitpod:
 - Function Macros for Execution Time Measurement
   - `TIME_START()` - Returns a `struct timespec` representing the start time
   - `TIME_CHECK(start)` - Returns the time elapsed since `start`, in milliseconds
+- Function Macros for Exception Handling
+  - `THROW(fmt, ...)` - Throws an exception with a message, and exits the program with `EXIT_FAILURE` code
+  - `THROW_IF(cond, fmt, ...)` - If `cond` is `true`, runs `THROW(fmt, ...)`
