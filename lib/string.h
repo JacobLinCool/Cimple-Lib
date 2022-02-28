@@ -69,6 +69,16 @@ static inline string trim(const string restrict target, const u8 mode, const str
  * @return string* The slices.
  */
 static inline string* split(const string restrict target, u64* restrict count, string* restrict delimiters, const u64 delimiter_count) {
+    for (u64 i = 0; i < delimiter_count; i++) {
+        if (delimiters[i] == NULL || strlen(delimiters[i]) == 0) {
+            string r = (string)calloc(strlen(target) + 1, sizeof(char));
+            strcpy(r, target);
+            string* result = (string*)malloc(1 * sizeof(string));
+            result[0] = r;
+            *count = 1;
+            return result;
+        }
+    }
     string head = (string)target;
     string* result = (string*)calloc(strlen(target) + 1, sizeof(string));
     u64 result_count = 0;

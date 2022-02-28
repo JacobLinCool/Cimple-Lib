@@ -69,6 +69,13 @@ void test_split() {
     free(slices[0]);
     free(slices);
 
+    count = 0;
+    slices = SPLIT(empty_str, &count, (string[]) { "" }, 1);
+    assert(count == 1);
+    assert(strcmp(slices[0], "") == 0);
+    free(slices[0]);
+    free(slices);
+
     return;
 }
 
