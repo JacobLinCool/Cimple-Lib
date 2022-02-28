@@ -1,8 +1,19 @@
-all: 
-	gcc example_1.c -lm -o example_1
-	gcc example_2.c -lm -o example_2
-	gcc example_3.c -lm -o example_3
-	gcc example_4.c -lm -o example_4
+all:
+	make test -i
 
-clean:
-	rm -f example_1 example_2 example_3 example_4
+compile_test:
+	@ echo "Compiling Tests"
+	@ gcc ./tests/string.test.c -lm -o ./tests/string_test
+	@ gcc ./tests/timing.test.c -lm -o ./tests/timing_test
+	@ gcc ./tests/array.test.c -lm -o ./tests/array_test
+	@ gcc ./tests/format.test.c -lm -o ./tests/format_test
+	@ gcc ./tests/debug.test.c -lm -o ./tests/debug_test
+	@ echo "Tests Compiled"
+
+test: compile_test
+	@ ./tests/string_test
+	@ ./tests/timing_test
+	@ ./tests/array_test
+	@ ./tests/format_test
+	@ ./tests/debug_test
+	@ echo "All Tests Finished"

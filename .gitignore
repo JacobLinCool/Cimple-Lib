@@ -3,6 +3,8 @@
 !*.*
 !Makefile
 !LICENSE
+!lib/
+!tests/
 
 # Prerequisites
 *.d
