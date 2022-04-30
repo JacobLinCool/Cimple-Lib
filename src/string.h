@@ -53,14 +53,16 @@ struct String* __String_format(const char* format, ...) {
     va_list args;
     va_start(args, format);
     size_t length = vsnprintf(NULL, 0, format, args);
+    va_end(args);
 
     struct String* string = malloc(sizeof(struct String));
     string->capacity = length + 1;
     string->data = malloc(sizeof(char) * string->capacity);
+    va_start(args, format);
     vsprintf(string->data, format, args);
+    va_end(args);
     string->length = length;
 
-    va_end(args);
     return string;
 }
 
