@@ -3,8 +3,10 @@
 !*.*
 !Makefile
 !LICENSE
-!lib/
-!tests/
+!src/
+!img/
+**/.DS_Store
+*.test
 
 # Prerequisites
 *.d

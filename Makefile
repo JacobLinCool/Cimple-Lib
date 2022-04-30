@@ -1,19 +1,20 @@
-all:
-	make test -i
+cc = gcc
+src_dir = src
 
-compile_test:
-	@ echo "Compiling Tests"
-	@ gcc ./tests/string.test.c -lm -o ./tests/string_test
-	@ gcc ./tests/timing.test.c -lm -o ./tests/timing_test
-	@ gcc ./tests/array.test.c -lm -o ./tests/array_test
-	@ gcc ./tests/format.test.c -lm -o ./tests/format_test
-	@ gcc ./tests/debug.test.c -lm -o ./tests/debug_test
-	@ echo "Tests Compiled"
+test_files = $(wildcard $(src_dir)/*.test.c)
 
-test: compile_test
-	@ ./tests/string_test
-	@ ./tests/timing_test
-	@ ./tests/array_test
-	@ ./tests/format_test
-	@ ./tests/debug_test
-	@ echo "All Tests Finished"
+all: test
+
+test: $(test_files)
+	@echo "Tests Passed"
+
+$(test_files): force
+	@echo "Running test: $(basename $@)"
+	@$(cc) -o $(basename $@) -fsanitize=address -D DEBUG $@
+	@./$(basename $@)
+
+clean:
+	@rm -f $(test_files)
+	@echo "Cleaned"
+
+.PHONY: all clean test force

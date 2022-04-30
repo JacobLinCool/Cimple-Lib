@@ -1,47 +1,41 @@
-# C Helper
+# Cimple Lib
 
 A delightful helper library for C learners.
 
 Good for someone who needs to do C programming homework.
 
-It helps me to learn how to use (fancy) macros in C.
+<!-- It helps me to learn how to use (fancy) macros in C. -->
 
 ## Usage
 
-There are a lot of header files in `lib` directory.
+All libraries are _header files_, so you can directly include them in your C code.
 
-You can pick some of them you want to use and include them in your file.
-
-Careful! Some header files need to work with other header files. 
-For example, almost every header file in `lib` directory needs to include `base.h` header file.
-
-*The `helper.h` includes all header files in `lib` directory.*
+Since the libraries are all lightweight, we don't have to worry about the compilation time.
 
 ```c
-#define DEBUG // Enable debug mode, Remove this line or comment it out to disable debug mode
-#include "helper.h"
+#include "src/all.h"
 
 int main() {
-    printf("Hello, world!\n");
-    DBG_PRINT("Hello, world!\n");
+    char* label = "print 1 to 1000";
+    Timing.start(label);
+    for (int i = 1; i <= 1000; i++) {
+        Console.rainbow("%d", i);
+    }
+    Console.log("%s: %Lf ms", label, Timing.check(label));
+
     return 0;
 }
 ```
 
-See [Makefile](./Makefile) for compiling example, actually you do not need to worry about that.
+I recommend you to use VS Code because of the great language server support.
 
-See tests in `tests` directory to see how to use this library in action.
-
-## Run Examples (Tests)
-
-1. Clone the repository and cd into the directory.
-2. Run `make` to compile the C code.
-
-Or just open in Gitpod:
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JacobLinCool/C-Helper)
+![language server](img/language-server.png)
 
 ## Features
+
+### `all.h`
+
+Includes all the libraries below.
 
 ### `base.h`
 
@@ -49,181 +43,215 @@ This header file includes:
 
 - Standard libraries that are useful in most cases.
 - Type alias for standard types.
+  - `i8`, `i16`, `i32`, `i64`, `u8`, `u16`, `u32`, `u64`, `f32`, `f64`, `f128`
 
-*This header file only has macros.*
+### `console.h`
 
-#### libraries included
-
-```c
-#include <assert.h>
-#include <errno.h>
-#include <inttypes.h>
-#include <math.h>
-#include <regex.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-```
-
-#### type alias
-
-- `i8`, `i16`, `i32`, `i64`
-  - `int8_t`, `int16_t`, `int32_t`, `int64_t`
-- `u8`, `u16`, `u32`, `u64`
-  - `uint8_t`, `uint16_t`, `uint32_t`, `uint64_t`
-- `f32`, `f64`, `f128`
-  - `float`, `double`, `long double`
-- `string`
-  - `char*`
-
-#### ansi colors
+`Console` utilities.
 
 ```c
-#define CLR_RED     "\x1b[91m"
-#define CLR_GREEN   "\x1b[92m"
-#define CLR_YELLOW  "\x1b[93m"
-#define CLR_BLUE    "\x1b[94m"
-#define CLR_MAGENTA "\x1b[95m"
-#define CLR_CYAN    "\x1b[96m"
-#define CLR_NONE    "\x1b[0m"
+struct {
+    size_t (*gray)(const char* str, ...);
+    size_t (*red)(const char* str, ...);
+    size_t (*green)(const char* str, ...);
+    size_t (*blue)(const char* str, ...);
+    size_t (*yellow)(const char* str, ...);
+    size_t (*magenta)(const char* str, ...);
+    size_t (*cyan)(const char* str, ...);
+
+    size_t (*success)(const char* str, ...);
+    size_t (*info)(const char* str, ...);
+    size_t (*warn)(const char* str, ...);
+    size_t (*error)(const char* str, ...);
+
+    /** Logs a message to the console, with time prefix */
+    void (*log)(const char* str, ...);
+
+    /** Print in rainbow colors */
+    size_t (*rainbow)(const char* str, ...);
+
+    /** Color constants */
+    struct {
+        const char* GRAY;
+        const char* RED;
+        const char* GREEN;
+        const char* BLUE;
+        const char* YELLOW;
+        const char* MAGENTA;
+        const char* CYAN;
+    } C;
+} Console;
 ```
 
 ### `string.h`
 
-String utilities with DEFAULT VALUE support and OVERLOADING support.
-
-#### `trim` & `TRIM`
-
-`trim` can trim the leading and/or trailing characters.
+`struct String` and `String` utilities.
 
 ```c
- /**
-  * @brief Trim the string.
-  *
-  * @param target The string to be trimmed.
-  * @param mode The trim mode. 3: both side, 1: left side, 2: right side.
-  * @param dict The trim dictionary.
-  * @return string The trimmed string.
-  */
-string trim(string target, u8 mode, string dict);
+struct String {
+    char*  data;
+    size_t length;
+    size_t capacity;
+};
+
+struct {
+    /**
+     * Construct a new String from a C string.
+     * If NULL is passed, a new empty String is created.
+     */
+    struct String* (*new)(const char*);
+    /**
+     * Construct a new String from a C string with IO formatting.
+     */
+    struct String* (*format)(const char* format, ...);
+    /**
+     * Clone a String.
+     */
+    struct String* (*clone)(struct String* string);
+    /**
+     * Concats two Strings and returns the new String.
+     */
+    struct String* (*concat)(struct String* front, const struct String* back);
+    /**
+     * Trim the chars from the beginning and end of a String and returns the new String.
+     * If charset is NULL, the default charset ( \\t\\n\\r\\f\\v ) is used.
+     */
+    struct String* (*trim)(struct String* string, const char* charset);
+    /**
+     * Extract a substring from a String and returns the new String.
+     */
+    struct String* (*substring)(struct String* string, size_t start, size_t end);
+    /**
+     * Search for a substring in a String and returns the index of occurrences, with size `count`.
+     */
+    size_t* (*search)(struct String* string, const char* pattern, size_t* count);
+    /**
+     * Repeat a String with separator for a given number of times and returns the new String.
+     */
+    struct String* (*repeat)(struct String* string, size_t times, const char* separator);
+    /**
+     * Replace a substring in a String with another substring and returns the new String.
+     */
+    struct String* (*replace)(struct String* string, const char* old, const char* new);
+    /**
+     * Make a String uppercase and returns the new String.
+     */
+    struct String* (*upper)(struct String* string);
+    /**
+     * Make a String lowercase and returns the new String.
+     */
+    struct String* (*lower)(struct String* string);
+    /**
+     * Reverse a String and returns the new String.
+     */
+    struct String* (*reverse)(struct String* string);
+    /**
+     * Pad a String with a given string and returns the new String.
+     */
+    struct String* (*pad)(struct String* string, size_t length, const char* pad);
+    /**
+     * Split a String with a given separator and returns the new String array.
+     */
+    struct String** (*split)(struct String* string, const char* delimiter, size_t* count);
+    /**
+     * Free a String.
+     */
+    void (*free)(struct String* string);
+    /**
+     * Resize a String to a given length.
+     */
+    void (*resize)(struct String* string, size_t length);
+    /**
+     * Append a C string to a String.
+     */
+    void (*append)(struct String* string, const char* data);
+    /**
+     * Prepend a C string to a String.
+     */
+    void (*prepend)(struct String* string, const char* data);
+    /**
+     * Insert a C string at a given index in a String.
+     */
+    void (*insert)(struct String* string, size_t index, const char* data);
+    /**
+     * Remove a range of index and length in a String.
+     */
+    void (*remove)(struct String* string, size_t index, size_t length);
+    /**
+     * Clear a String.
+     */
+    void (*clear)(struct String* string);
+} String;
 ```
 
-`TRIM` is just like `trim`, but it supports DEFAULT VALUE.
-
-You can see it like this:
+**Example**
 
 ```c
-TRIM(string target, u8 mode = 3, string dict = "\t\n\r ");
-```
+typedef struct String* Str;
 
-#### `split` & `SPLIT`
+Str my_string = String.format("There are %d monkeys in the %s", 10, "tree");
 
-`split` can split the string by the given delimiter(s).
-
-```c
-/**
- * @brief Split the string into slices by the given delimiter strings.
- *
- * @param target The string to be splitted.
- * @param count The number of slices. This is a return value.
- * @param delimiters The delimiter strings.
- * @param delimiter_count The number of delimiter strings.
- * @return string* The slices.
- */
-string* split(string target, u64* count, string* delimiters, u64 delimiter_count);
-```
-
-`SPLIT` is just like `split`, but it supports OVERLOADING.
-
-```c
-SPLIT(string target, u64* count); // delimiters = (string[]){" "}, delimiter_count = 1
-SPLIT(string target, u64* count, string* delimiters, u64 delimiter_count);
-```
-
-#### `join` & `JOIN`
-
-`join` can join the slices into a string.
-
-```c
-/**
- * @brief Join the slices into a string.
- *
- * @param slices The slices.
- * @param count The number of slices.
- * @param glue The glue string.
- * @return string The joined string.
- */
-string join(string* slices, u64 count, string glue);
-```
-
-`JOIN` is just like `join`, but it supports OVERLOADING.
-
-```c
-JOIN(string* slices, u64 count); // glue = " "
-JOIN(string* slices, u64 count, string glue);
-```
-
-#### `replace`
-
-`replace` can replace "keyword"s in "target" with "replacement".
-
-```c
-/**
- * @brief Replace the string with the given keyword and replacement.
- *
- * @param target The string to be replaced.
- * @param keyword The keyword to be replaced.
- * @param replacement The replacement.
- * @return string The replaced string.
- */
-string replace(string target, string keyword, string replacement);
-```
-
-I don't think we need any default value or overloading for `replace`.
-
-### `array.h`
-
-`array_map` and `array_reduce`.
-
-### `format.h`
-
-#### `tint`
-
-```c
- /**
-  * @brief Tint the string.
-  *
-  * @param str The string to be tinted.
-  * @param color The color of the string.
-  * @return string The tinted string.
-  */
-string tint(string str, string color);
-```
-
-#### `format_array`
-
-```c
-format_array(type, array, from, to)
-```
-
-`type` can be `i8`, `i16`, `i32`, `i64`, `u8`, `u16`, `u32`, `u64`, `f32`, `f64`, `f128`, `cahr`, `str`, or `ptr`.
-
-Example:
-
-```c
-string a[] = { "Hello", "World", "12345" };
-string str = format_array(str, a, 0, 2);
-printf("%s\n", str);
+size_t size;
+Str* words = String.split(my_string, " ", &size);
 ```
 
 ### `debug.h`
 
 Debug utilities.
 
+`THROW` `THROW_IF`
+
 ### `timing.h`
 
-Time measurement utilities.
+`Timing` utilities.
+
+```c
+struct {
+    /**
+     * @brief Start a timer with a label.
+     * @param label The label of the timer.
+     */
+    bool (*start)(const char* label);
+    /**
+     * @brief Get the time elapsed since the last timing_start() call.
+     * @param label The label of the timer.
+     * @return long double The time elapsed since the last timing_start() call in milliseconds.
+     */
+    long double (*check)(const char* label);
+    /**
+     * @brief Remove a timer with a label.
+     * @param label The label of the timer.
+     * @return bool True if the timer is removed successfully.
+     */
+    bool (*remove)(const char* label);
+    /**
+     * @brief Clear all the timers.
+     * @return size_t The number of timers cleared.
+     */
+    size_t (*clear)();
+    /**
+     * @brief Sleep for a certain amount of milliseconds.
+     * @param ms The amount of milliseconds to sleep.
+     */
+    void (*sleep)(const uint64_t ms);
+} Timing;
+```
+
+**Example**
+
+```c
+Timing.start("test");
+Timing.sleep(500);
+Console.cyan("%Lf ms", Timing.check("test"));
+Timing.sleep(500);
+Console.yellow("%Lf ms", Timing.check("test"));
+```
+
+## Run Tests
+
+1. Clone the repository and cd into the directory.
+2. Run `make` to compile the C code.
+
+Or just open in Gitpod:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JacobLinCool/Cimple-Lib)
