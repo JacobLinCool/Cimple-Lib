@@ -1,5 +1,12 @@
 {
+    "C_Cpp.default.cStandard": "c11",
+    "C_Cpp.clang_format_sortIncludes": true,
+    "C_Cpp.clang_format_style": "file",
+    "C_Cpp.formatting": "clangFormat",
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
     "editor.formatOnSave": true,
+    "editor.rulers": [80, 100],
     "files.associations": {
         "*.h": "c"
     }
