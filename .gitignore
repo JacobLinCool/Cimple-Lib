@@ -5,6 +5,7 @@
 !LICENSE
 !src/
 !img/
+!.github/**/*
 **/.DS_Store
 *.test
 
