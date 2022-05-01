@@ -14,6 +14,7 @@
 #include "base.h"
 #include "console.h"
 #include "debug.h"
+#include "file.h"
 #include "string.h"
 #include "timing.h"
 
