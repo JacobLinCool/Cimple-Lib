@@ -12,6 +12,7 @@
 #define __CIMPLE_UTILS_ALL_H
 
 #include "base.h"
+#include "bucket.h"
 #include "console.h"
 #include "debug.h"
 #include "file.h"

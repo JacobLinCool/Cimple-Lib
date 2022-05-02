@@ -198,6 +198,25 @@ Timing.sleep(500);
 Console.yellow("%Lf ms", Timing.check("test"));
 ```
 
+### `bucket.h`
+
+Pointer manager.
+
+`$()`, `$clear()`, ...
+
+**Example**
+
+```c
+for (int i = 0; i < 4096; i++) {
+    char* str = $(calloc(1024, sizeof(char)));
+    sprintf(str, "%d", i);
+}
+
+assert($size() == 4096);
+assert($capacity() == 4096);
+$free(); // free all pointers at once
+```
+
 ## Run Tests
 
 1. Clone the repository and cd into the directory.
