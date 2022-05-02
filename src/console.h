@@ -32,15 +32,15 @@
 #define __FMT_UNDERLINE "\x1b[4m"
 #define __FMT_INVERSE "\x1b[7m"
 
-static inline char* __Console_fmt(const char* format, ...) {
-    va_list args;
-    va_start(args, format);
-    size_t size = vsnprintf(NULL, 0, format, args);
-    va_end(args);
+static inline char* __Console_fmt(const char* format, va_list args) {
+    va_list args_clone;
+    va_copy(args_clone, args);
+    size_t size = vsnprintf(NULL, 0, format, args_clone);
+    va_end(args_clone);
     char* str = malloc((size + 1) * sizeof(char));
-    va_start(args, format);
-    vsprintf(str, format, args);
-    va_end(args);
+    va_copy(args_clone, args);
+    vsprintf(str, format, args_clone);
+    va_end(args_clone);
     str[size] = '\0';
     return str;
 }
@@ -159,14 +159,14 @@ size_t __Console_success(const char* str, ...) {
 
 size_t __Console_info(const char* str, ...) {
     va_list args;
-    va_start(args, str);
 
-    char*  content = __Console_fmt(str, args);
+    va_start(args, str);
+    char* content = __Console_fmt(str, args);
+    va_end(args);
     size_t printed = printf(__FMT_BLUE "[INFO]" __FMT_NONE " %s", content);
     printf("\n");
 
     free(content);
-    va_end(args);
 
     return printed;
 }
