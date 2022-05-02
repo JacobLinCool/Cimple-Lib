@@ -85,114 +85,65 @@ struct {
 
 ### `string.h`
 
-`struct String` and `String` utilities.
+`String` utilities.
 
 ```c
-struct String {
-    char*  data;
-    size_t length;
-    size_t capacity;
-};
-
 struct {
     /**
-     * Construct a new String from a C string.
-     * If NULL is passed, a new empty String is created.
+     * Construct a new string with IO formatting.
      */
-    struct String* (*new)(const char*);
+    char* (*format)(const char* format, ...);
     /**
-     * Construct a new String from a C string with IO formatting.
-     */
-    struct String* (*format)(const char* format, ...);
-    /**
-     * Clone a String.
-     */
-    struct String* (*clone)(struct String* string);
-    /**
-     * Concats two Strings and returns the new String.
-     */
-    struct String* (*concat)(struct String* front, const struct String* back);
-    /**
-     * Trim the chars from the beginning and end of a String and returns the new String.
+     * Trim the chars from the beginning and end of a string and returns the new string.
      * If charset is NULL, the default charset ( \\t\\n\\r\\f\\v ) is used.
      */
-    struct String* (*trim)(struct String* string, const char* charset);
+    char* (*trim)(const char* string, const char* charset);
     /**
-     * Extract a substring from a String and returns the new String.
+     * Extract a substring from a string and returns the new string.
      */
-    struct String* (*substring)(struct String* string, size_t start, size_t end);
+    char* (*substring)(const char* string, size_t start, size_t end);
     /**
-     * Search for a substring in a String and returns the index of occurrences, with size `count`.
+     * Search for a substring in a string and returns the index of occurrences, with size `count`.
      */
-    size_t* (*search)(struct String* string, const char* pattern, size_t* count);
+    size_t* (*search)(const char* string, const char* pattern, size_t* count);
     /**
-     * Repeat a String with separator for a given number of times and returns the new String.
+     * Repeat a string with separator for a given number of times and returns the new string.
      */
-    struct String* (*repeat)(struct String* string, size_t times, const char* separator);
+    char* (*repeat)(const char* string, size_t times, const char* separator);
     /**
-     * Replace a substring in a String with another substring and returns the new String.
+     * Replace a substring in a string with another substring and returns the new string.
      */
-    struct String* (*replace)(struct String* string, const char* old, const char* new);
+    char* (*replace)(const char* string, const char* old, const char* new);
     /**
-     * Make a String uppercase and returns the new String.
+     * Make a string uppercase and returns the new string.
      */
-    struct String* (*upper)(struct String* string);
+    char* (*upper)(const char* string);
     /**
-     * Make a String lowercase and returns the new String.
+     * Make a string lowercase and returns the new string.
      */
-    struct String* (*lower)(struct String* string);
+    char* (*lower)(const char* string);
     /**
-     * Reverse a String and returns the new String.
+     * Reverse a string and returns the new string.
      */
-    struct String* (*reverse)(struct String* string);
+    char* (*reverse)(const char* string);
     /**
-     * Pad a String with a given string and returns the new String.
+     * Pad a string with a given string and returns the new string.
      */
-    struct String* (*pad)(struct String* string, size_t length, const char* pad);
+    char* (*pad)(const char* string, size_t length, const char* pad);
     /**
-     * Split a String with a given separator and returns the new String array.
+     * Split a string with a given separator and returns the new string array.
      */
-    struct String** (*split)(struct String* string, const char* delimiter, size_t* count);
-    /**
-     * Free a String.
-     */
-    void (*free)(struct String* string);
-    /**
-     * Resize a String to a given length.
-     */
-    void (*resize)(struct String* string, size_t length);
-    /**
-     * Append a C string to a String.
-     */
-    void (*append)(struct String* string, const char* data);
-    /**
-     * Prepend a C string to a String.
-     */
-    void (*prepend)(struct String* string, const char* data);
-    /**
-     * Insert a C string at a given index in a String.
-     */
-    void (*insert)(struct String* string, size_t index, const char* data);
-    /**
-     * Remove a range of index and length in a String.
-     */
-    void (*remove)(struct String* string, size_t index, size_t length);
-    /**
-     * Clear a String.
-     */
-    void (*clear)(struct String* string);
+    char** (*split)(const char* string, const char* delimiter, size_t* count);
 } String;
 ```
 
 **Example**
 
 ```c
-typedef struct String* Str;
-
-Str my_string = String.format("There are %d monkeys in the %s", 10, "tree");
+char* my_string = String.format("There are %d monkeys in the %s", 10, "tree");
 
 size_t size;
-Str* words = String.split(my_string, " ", &size);
+char** words = String.split(my_string, " ", &size);
 ```
 
 ### `debug.h`
@@ -255,3 +206,16 @@ Console.yellow("%Lf ms", Timing.check("test"));
 Or just open in Gitpod:
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JacobLinCool/Cimple-Lib)
+
+## Some Concepts
+
+### Why using `String.lower` instead of `strlower`?
+
+Namespace is a good idea, although it is not exisiting in C, but we can still simulate it by using a global struct.
+
+Benefits:
+
+- Avoid naming conflicts (pollution)
+- Provide library description through VS Code intellisense
+
+The only downside is that dereferring a function pointer may have a small cost. (Maybe compiler will optimize it away?)
