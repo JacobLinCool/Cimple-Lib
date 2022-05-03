@@ -200,7 +200,7 @@ Console.yellow("%Lf ms", Timing.check("test"));
 
 ### `bucket.h`
 
-Pointer manager.
+Pointer manager. It can help you to elegantly code with function chaining.
 
 `$()`, `$clear()`, ...
 
@@ -215,6 +215,23 @@ for (int i = 0; i < 4096; i++) {
 assert($size() == 4096);
 assert($capacity() == 4096);
 $free(); // free all pointers at once
+```
+
+```c
+// With $
+char* str = String.upper($(String.trim($(String.format("%s %s!", "  Hello", "World")), " ")));
+$free(); // free the intermediates
+assert(strcmp(str, "HELLO WORLD!") == 0);
+do_something(str);
+
+// Without $
+char* formatted = String.format("%s %s!", "  Hello", "World");
+char* trimmed = String.trim(formatted, " ");
+free(formatted);
+char* str = String.upper(trimmed);
+free(trimmed);
+assert(strcmp(str, "HELLO WORLD!") == 0);
+do_something(str);
 ```
 
 ## Run Tests
