@@ -234,6 +234,84 @@ assert(strcmp(str, "HELLO WORLD!") == 0);
 do_something(str);
 ```
 
+### `buffer.h`
+
+Bit operations and endianness conversion.
+
+```c
+/**
+ * @brief Buffer utility functions.
+ */
+struct {
+    /**
+     * @brief Get bit from buffer
+     * @param buffer The buffer
+     * @param bit The bit to be get
+     */
+    bool (*get_bit)(const void* buffer, size_t bit);
+    /**
+     * @brief Set bit in buffer
+     * @param buffer The buffer
+     * @param bit The bit to be set
+     * @param value The value to be set
+     */
+    void (*set_bit)(void* buffer, size_t bit, bool value);
+    /**
+     * @brief Stringify the buffer
+     * @param buffer The buffer
+     * @param size The size of the buffer, in bits
+     * @param col_size The size of each column, in bits
+     * @param row_size The size of each row, in columns
+     */
+    char* (*stringify)(const void* buffer, size_t size, size_t col_size, size_t row_size);
+    /**
+     * @brief Parse a stringified buffer into a buffer
+     * @param buffer The buffer
+     * @param str The string to be parsed
+     * @param size The size of the buffer, in bits
+     */
+    void (*parse)(void* buffer, const char* str, size_t size);
+    /**
+     * @brief Get the endian of the system
+     * @return true if the system is little endian, false otherwise
+     */
+    bool (*endian)();
+    /**
+     * @brief Reverse the buffer
+     * @param buffer The buffer
+     * @param size The size of the buffer, in bytes
+     */
+    uint8_t* (*reverse)(const void* buffer, size_t size);
+    /**
+     * @brief Convert a little endian buffer to big endian
+     * @param buffer The buffer
+     * @param size The size of the buffer, in bits
+     */
+    void* (*to_big)(const void* buffer, size_t size);
+    /**
+     * @brief Convert a big endian buffer to little endian
+     * @param buffer The buffer
+     * @param size The size of the buffer, in bits
+     */
+    void* (*to_little)(const void* buffer, size_t size);
+} Buffer;
+```
+
+**Example**
+
+```c
+uint8_t* buffer = calloc(16 / 8, sizeof(uint8_t));
+for (int i = 0; i < 16; i++) {
+    Buffer.set_bit(buffer, i, i % 2);
+}
+for (int i = 0; i < 16; i++) {
+    assert(Buffer.get_bit(buffer, i) == i % 2);
+}
+
+char* str = Buffer.stringify(buffer, 16, 8, 8);
+printf("%s\n", str); // "01010101 01010101"
+```
+
 ## Run Tests
 
 1. Clone the repository and cd into the directory.
