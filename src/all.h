@@ -13,6 +13,7 @@
 
 #include "base.h"
 #include "bucket.h"
+#include "buffer.h"
 #include "console.h"
 #include "debug.h"
 #include "file.h"
