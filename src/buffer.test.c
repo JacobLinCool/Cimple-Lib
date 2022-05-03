@@ -1,36 +1,27 @@
 #include "buffer.h"
 
 #include <assert.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "timing.h"
 
 int main() {
     uint8_t* buffer = calloc(1024 / 8, sizeof(uint8_t));
     assert(buffer != NULL);
 
-    Timing.start("set");
     for (int i = 0; i < 1024; i++) {
         Buffer.set_bit(buffer, i, i % 2);
     }
-    // printf("Set: %Lf\n", Timing.check("set"));
 
-    Timing.start("get");
     for (int i = 0; i < 1024; i++) {
         assert(Buffer.get_bit(buffer, i) == i % 2);
     }
-    // printf("Get: %Lf\n", Timing.check("get"));
 
-    Timing.start("stringify");
     char* str = Buffer.stringify(buffer, 1024, 8, 8);
-    // printf("Stringify: %Lf\n", Timing.check("stringify"));
     // printf("%s\n", str);
 
-    Timing.start("parse");
     Buffer.parse(buffer, str, 1024);
-    // printf("Parse: %Lf\n", Timing.check("parse"));
     char* str2 = Buffer.stringify(buffer, 1024, 8, 8);
     // printf("%s\n", str2);
 

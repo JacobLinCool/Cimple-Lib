@@ -12,9 +12,9 @@
 #define __CIMPLE_UTILS_BUFFER_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 bool __buffer_get_bit(const void* buffer, size_t bit) {
     if (buffer == NULL) {
