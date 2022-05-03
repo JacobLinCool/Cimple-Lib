@@ -83,7 +83,7 @@ void __buffer_parse(void* buffer, const char* str, size_t size) {
 
 bool __buffer_endian() { return (*(uint16_t*)"\x01\x02") == 0x0201; }
 
-uint8_t* __buffer_reverse(const void* buffer, size_t size) {
+void* __buffer_reverse(const void* buffer, size_t size) {
     if (buffer == NULL) {
         return NULL;
     }
@@ -181,7 +181,7 @@ struct {
      * @param buffer The buffer
      * @param size The size of the buffer, in bytes
      */
-    uint8_t* (*reverse)(const void* buffer, size_t size);
+    void* (*reverse)(const void* buffer, size_t size);
     /**
      * @brief Convert a little endian buffer to big endian
      * @param buffer The buffer
