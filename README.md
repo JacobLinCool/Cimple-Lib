@@ -312,6 +312,55 @@ char* str = Buffer.stringify(buffer, 16, 8, 8);
 printf("%s\n", str); // "01010101 01010101"
 ```
 
+### `options.h`
+
+Parse command line options.
+
+```c
+struct {
+    /**
+     * @brief Parse command line arguments
+     * @param argc number of arguments
+     * @param argv array of arguments
+     * @return parsed options
+     */
+    ParsedOptions* (*parse)(size_t argc, char* argv[]);
+    /**
+     * @brief Get an option from the parsed options
+     * @param options parsed options
+     * @param name name of the option
+     * @return value of the option
+     */
+    char* (*get)(ParsedOptions* options, char* name);
+    /**
+     * @brief Check if an option is present
+     * @param options parsed options
+     * @param name name of the option
+     * @return true if the option is present, false otherwise
+     */
+    bool (*has)(ParsedOptions* options, char* name);
+    /**
+     * @brief Free the parsed options
+     * @param options parsed options
+     */
+    void (*free)(ParsedOptions* options);
+} Options;
+```
+
+**Example**
+
+```c
+ParsedOptions* options = Options.parse(argc, argv);
+
+if (Options.has(options, "help") || Options.has(options, "h")) {
+    printf("Usage: %s --name <something>\n", argv[0]);
+    return 0;
+}
+
+printf("Hello, %s!\n", Options.get(options, "name") || "XYZ");
+Options.free(options);
+```
+
 ## Run Tests
 
 1. Clone the repository and cd into the directory.
