@@ -2,9 +2,11 @@
 *
 !*.*
 !Makefile
+!Dockerfile
 !LICENSE
 !src/
 !img/
+!scripts/
 !.github/**/*
 **/.DS_Store
 *.test
