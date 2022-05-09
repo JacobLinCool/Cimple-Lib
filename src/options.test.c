@@ -66,5 +66,18 @@ int main() {
     assert(options->wilds[1] && strcmp(options->wilds[1], "file 2.txt") == 0);
     Options.free(options);
 
+    int32_t argc7 = 5;
+    char*   argv7[] = {"./program", "--key", "value", "--bool", "file.txt"};
+    options = Options.parse(argc7, argv7);
+    assert(options->option_count == 2);
+    assert(options->wild_count == 0);
+    Options.key_only(options, "bool");
+    assert(options->option_count == 2);
+    assert(options->wild_count == 1);
+    assert(Options.has(options, "key") && strcmp(Options.get(options, "key"), "value") == 0);
+    assert(Options.has(options, "bool") && Options.get(options, "bool") == NULL);
+    assert(options->wilds[0] && strcmp(options->wilds[0], "file.txt") == 0);
+    Options.free(options);
+
     return EXIT_SUCCESS;
 }

@@ -99,6 +99,21 @@ void __free_options(ParsedOptions* options) {
     free(options);
 }
 
+bool __options_key_only(ParsedOptions* options, char* name) {
+    for (size_t i = 0; i < options->option_count; i++) {
+        if (strcmp(options->options[i].name, name) == 0) {
+            if (options->options[i].value) {
+                options->wild_count++;
+                options->wilds = realloc(options->wilds, sizeof(char*) * options->wild_count);
+                options->wilds[options->wild_count - 1] = options->options[i].value;
+                options->options[i].value = NULL;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 struct {
     /**
      * @brief Parse command line arguments
@@ -126,7 +141,19 @@ struct {
      * @param options parsed options
      */
     void (*free)(ParsedOptions* options);
+    /**
+     * @brief Fix the option to be key only, will move the value to the wilds
+     * @param options parsed options
+     * @param name name of the option
+     * @return true if the option is fixed, false otherwise
+     */
+    bool (*key_only)(ParsedOptions* options, char* name);
 } Options = {
-    .parse = __parse_options, .get = __get_option, .has = __has_option, .free = __free_options};
+    .parse = __parse_options,
+    .get = __get_option,
+    .has = __has_option,
+    .free = __free_options,
+    .key_only = __options_key_only,
+};
 
 #endif  // __CIMPLE_UTILS_OPTIONS_H
