@@ -10,7 +10,7 @@ test: $(test_files)
 
 $(test_files): force
 	@echo "Running test: $(basename $@)"
-	@$(cc) -o $(basename $@) -fsanitize=address -D DEBUG $@
+	@$(cc) -o $(basename $@) -fsanitize=address -Wall -Wextra -D DEBUG $@
 	@./$(basename $@)
 
 clean:
