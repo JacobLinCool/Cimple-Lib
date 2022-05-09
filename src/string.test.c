@@ -44,7 +44,7 @@ void test_string_utils() {
     assert(strcmp(slices[4], "in") == 0);
     assert(strcmp(slices[5], "the") == 0);
     assert(strcmp(slices[6], "house") == 0);
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         free(slices[i]);
     }
     free(slices);
@@ -54,7 +54,7 @@ void test_string_utils() {
     slices = String.split(my_string, NULL, &size);
     assert(size == 1);
     assert(strcmp(slices[0], "Hello!") == 0);
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         free(slices[i]);
     }
     free(slices);
