@@ -1,20 +1,32 @@
-cc = gcc
-src_dir = src
+CC = gcc
+FLAGS = -fsanitize=address -Wall -Wextra -lm -D DEBUG
 
-test_files = $(wildcard $(src_dir)/*.test.c)
+SRC_DIR = src
+SRCS = $(wildcard $(SRC_DIR)/*.h)
+TEST_SRCS = $(wildcard $(SRC_DIR)/*.test.c)
+TEST_OUTS = $(patsubst %.test.c,%.out,$(TEST_SRCS))
 
-all: test
+VERSION := $(shell git describe --tags --abbrev=0)
+DATE := $(shell date +%Y-%m-%d)
 
-test: $(test_files)
-	@echo "Tests Passed"
+all: clean test
 
-$(test_files): force
-	@echo "Running test: $(basename $@)"
-	@$(cc) -o $(basename $@) -fsanitize=address -Wall -Wextra -D DEBUG $@
-	@./$(basename $@)
+test: $(TEST_OUTS)
+	@echo "All Tests Passed"
+
+$(TEST_OUTS): $(patsubst %.out,%.test.c,$@)
+	@echo "Running test: $(patsubst src/%.out,%,$@)"
+	@$(CC) $(FLAGS) -o $@ $(patsubst %.out,%.test.c,$@)
+	@./$@
 
 clean:
-	@rm -f $(test_files)
+	rm -f $(TEST_OUTS) *.zip
 	@echo "Cleaned"
 
-.PHONY: all clean test force
+release:
+	sed -i "s/@version.*/@version $(VERSION)/g" $(SRCS)
+	sed -i "s/@date.*/@date $(DATE)/g" $(SRCS)
+	zip -r cimple-$(VERSION).zip src/*.h
+	@echo "Created cimple-$(VERSION).zip"
+
+.PHONY: all test clean
