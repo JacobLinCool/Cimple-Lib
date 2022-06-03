@@ -79,5 +79,15 @@ int main() {
     assert(options->wilds[0] && strcmp(options->wilds[0], "file.txt") == 0);
     Options.free(options);
 
+    int32_t argc8 = 4;
+    char*   argv8[] = {"./program", "--key=value", "-a=abcdefg", "file.txt"};
+    options = Options.parse(argc8, argv8);
+    assert(options->option_count == 2);
+    assert(options->wild_count == 1);
+    assert(Options.has(options, "key") && strcmp(Options.get(options, "key"), "value") == 0);
+    assert(Options.has(options, "a") && strcmp(Options.get(options, "a"), "abcdefg") == 0);
+    assert(options->wilds[0] && strcmp(options->wilds[0], "file.txt") == 0);
+    Options.free(options);
+
     return EXIT_SUCCESS;
 }
