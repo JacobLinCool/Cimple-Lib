@@ -19,4 +19,4 @@ jobs:
                   clangFormatVersion: 13
 
             - name: Test
-              run: make -j
+              run: make clean && make test -j$(nproc)

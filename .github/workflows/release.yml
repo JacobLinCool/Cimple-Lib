@@ -1,0 +1,34 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - v*
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Lint
+              uses: DoozyX/clang-format-lint-action@v0.13
+              with:
+                  clangFormatVersion: 13
+
+            - name: Test
+              run: make clean && make test -j$(nproc)
+
+            - name: Make Zip
+              run: make release
+
+            - name: Create Release
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  prerelease: false
+                  files: |
+                      cimple-*.zip
+                      LICENSE
