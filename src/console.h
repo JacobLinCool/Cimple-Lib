@@ -2,8 +2,8 @@
  * @file console.h
  * @author JacobLinCool <hi@jacoblin.cool> (github.com/JacobLinCool)
  * @brief The console header file of Cimple Lib.
- * @version 
- * @date 
+ * @version
+ * @date
  *
  * @copyright Copyright (c) 2022 JacobLinCool (MIT License)
  * @see https://github.com/JacobLinCool/Cimple-Lib
