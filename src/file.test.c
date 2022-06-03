@@ -13,13 +13,13 @@ int main() {
 }
 
 void test_File() {
-    File.write("test.txt", "Hello World!\n");
-    char* content = File.read("test.txt");
+    File.write("test.txt", (uint8_t*)"Hello World!\n", 13);
+    char* content = (char*)File.read("test.txt");
     assert(strcmp(content, "Hello World!\n") == 0);
     free(content);
 
-    File.append("test.txt", "Hello World!\n");
-    content = File.read("test.txt");
+    File.append("test.txt", (uint8_t*)"Hello World!\n", 13);
+    content = (char*)File.read("test.txt");
     assert(strcmp(content, "Hello World!\nHello World!\n") == 0);
     free(content);
 
