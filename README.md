@@ -382,3 +382,9 @@ Benefits:
 - Provide library description through VS Code intellisense
 
 The only downside is that dereferring a function pointer may have a small cost. (Maybe compiler will optimize it away?)
+
+## Development
+
+1. build the ubuntu environment image `scripts/build.sh`
+2. enter the container `scripts/start.sh`
+3. do anything you want
