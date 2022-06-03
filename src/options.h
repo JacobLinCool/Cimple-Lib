@@ -46,7 +46,11 @@ ParsedOptions* __parse_options(size_t argc, char* argv[]) {
             }
 
             char* value = NULL;
-            if (i + 1 < argc && argv[i + 1][0] != '-') {
+            char* equal = strchr(name, '=');
+            if (equal) {
+                *equal = '\0';
+                value = strdup(equal + 1);
+            } else if (i + 1 < argc && argv[i + 1][0] != '-') {
                 value = strdup(argv[i + 1]);
                 i++;
             }
