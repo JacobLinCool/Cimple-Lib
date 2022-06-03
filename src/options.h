@@ -2,8 +2,8 @@
  * @file options.h
  * @author JacobLinCool <hi@jacoblin.cool> (github.com/JacobLinCool)
  * @brief The options header file of Cimple Lib.
- * @version 3.0.0
- * @date 2022-05-07
+ * @version 
+ * @date 
  *
  * @copyright Copyright (c) 2022 JacobLinCool (MIT License)
  * @see https://github.com/JacobLinCool/Cimple-Lib
