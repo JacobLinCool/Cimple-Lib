@@ -29,4 +29,9 @@ release:
 	zip -r cimple-$(VERSION).zip src/*.h
 	@echo "Created cimple-$(VERSION).zip"
 
+unrelease:
+	sed -i "s/@version.*/@version/g" $(SRCS)
+	sed -i "s/@date.*/@date/g" $(SRCS)
+	rm -f cimple-$(VERSION).zip
+
 .PHONY: all test clean
