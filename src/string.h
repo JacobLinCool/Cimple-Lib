@@ -234,7 +234,7 @@ char** __String_split(const char* string, const char* separator, size_t* count) 
     return slices;
 }
 
-char* __String_random(size_t length, char* charset) {
+char* __String_random(size_t length, const char* charset) {
     if (charset == NULL) {
         charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
@@ -257,52 +257,93 @@ char* __String_random(size_t length, char* charset) {
  */
 struct {
     /**
-     * Construct a new string with IO formatting.
+     * @brief Construct a new string with IO formatting.
+     * @param format The format string.
+     * @param ... The arguments to the format string.
+     * @returns The new string.
      */
     char* (*format)(const char* format, ...);
     /**
-     * Trim the chars from the beginning and end of a string and returns the new string.
-     * If charset is NULL, the default charset ( \\t\\n\\r\\f\\v ) is used.
+     * @brief Trim the chars from the beginning and end of a string and returns the new string.
+     * @param string The string to trim.
+     * @param charset The chars to trim, if charset is NULL, the default charset ( \\t\\n\\r\\f\\v )
+     * is used.
+     * @returns The new string.
      */
     char* (*trim)(const char* string, const char* charset);
     /**
-     * Extract a substring from a string and returns the new string.
+     * @brief Extract a substring from a string and returns the new string.
+     * @param string The string to extract from.
+     * @param start The start index.
+     * @param end The end index.
+     * @returns The new string.
      */
     char* (*substring)(const char* string, int64_t start, int64_t end);
     /**
-     * Search for a substring in a string and returns the index of occurrences, with size `count`.
+     * @brief Search for a substring in a string and returns the indices of occurrences, with size
+     * `count`.
+     * @param string The string to search in.
+     * @param pattern The pattern to search for.
+     * @param count The number of occurrences to return.
+     * @returns The indices of occurrences.
      */
     size_t* (*search)(const char* string, const char* pattern, size_t* count);
     /**
-     * Repeat a string with separator for a given number of times and returns the new string.
+     * @brief Repeat a string with separator for a given number of times and returns the new string.
+     * @param string The string to repeat.
+     * @param times The number of times to repeat.
+     * @param separator The separator to use.
+     * @returns The new string.
      */
     char* (*repeat)(const char* string, size_t times, const char* separator);
     /**
-     * Replace a substring in a string with another substring and returns the new string.
+     * @brief Replace a substring in a string with another substring and returns the new string.
+     * @param string The string to replace in.
+     * @param old The substring to replace.
+     * @param new The substring to replace with.
+     * @returns The new string.
      */
     char* (*replace)(const char* string, const char* old, const char* new);
     /**
-     * Make a string uppercase and returns the new string.
+     * @brief Make a string uppercase and returns the new string.
+     * @param string The string to uppercase.
+     * @returns The new string.
      */
     char* (*upper)(const char* string);
     /**
-     * Make a string lowercase and returns the new string.
+     * @brief Make a string lowercase and returns the new string.
+     * @param string The string to lowercase.
+     * @returns The new string.
      */
     char* (*lower)(const char* string);
     /**
-     * Reverse a string and returns the new string.
+     * @brief Reverse a string and returns the new string.
+     * @param string The string to reverse.
+     * @returns The new string.
      */
     char* (*reverse)(const char* string);
     /**
-     * Pad a string with a given string and returns the new string.
+     * @brief Pad a string with a given string and returns the new string.
+     * @param string The string to pad.
+     * @param length The minimum length of the string.
+     * @param padding The string to pad with.
+     * @returns The new string.
      */
-    char* (*pad)(const char* string, size_t length, const char* pad);
+    char* (*pad)(const char* string, size_t length, const char* padding);
     /**
-     * Split a string with a given separator and returns the new string array.
+     * @brief Split a string with a given separator and returns the new string array.
+     * @param string The string to split.
+     * @param delimiter The delimiter to use.
+     * @param count The number of strings to return.
+     * @returns The new string array.
      */
     char** (*split)(const char* string, const char* delimiter, size_t* count);
     /**
-     * Generate a random string with a given length and returns the new string.
+     * @brief Generate a random string with a given length and returns the new string.
+     * @param length The length of the random string.
+     * @param charset The charset to generate the random string, if NULL, the default charset
+     * (0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ) is used.
+     * @return The new string.
      */
     char* (*random)(size_t length, const char* charset);
 } String = {
