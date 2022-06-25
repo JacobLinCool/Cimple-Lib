@@ -32,3 +32,13 @@ jobs:
                   files: |
                       cimple-*.zip
                       LICENSE
+
+            - name: Generate Documentation
+              run: sudo apt install -y doxygen && doxygen Doxyfile
+
+            - name: Deploy Documentation
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN  }}
+                  publish_dir: "./docs/html"
+                  publish_branch: "gh-pages"
