@@ -3,6 +3,7 @@
 !*.*
 !Makefile
 !Dockerfile
+!Doxyfile
 !LICENSE
 !src/
 !img/
