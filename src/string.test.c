@@ -59,4 +59,12 @@ void test_string_utils() {
     }
     free(slices);
     free(my_string);
+
+    char* rand_1 = String.random(8, NULL);
+    char* rand_2 = String.random(8, NULL);
+    assert(strlen(rand_1) == 8);
+    assert(strlen(rand_2) == 8);
+    assert(strcmp(rand_1, rand_2) != 0);
+    free(rand_1);
+    free(rand_2);
 }
