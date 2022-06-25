@@ -234,6 +234,24 @@ char** __String_split(const char* string, const char* separator, size_t* count) 
     return slices;
 }
 
+char* __String_random(size_t length, char* charset) {
+    if (charset == NULL) {
+        charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    }
+    size_t charset_len = strlen(charset);
+
+    if (charset_len == 0) {
+        return strdup("");
+    }
+
+    char* result = calloc(length + 1, sizeof(char));
+    for (size_t i = 0; i < length; i++) {
+        result[i] = charset[rand() % charset_len];
+    }
+
+    return result;
+}
+
 /**
  * @brief String Utility Functions.
  */
@@ -283,6 +301,10 @@ struct {
      * Split a string with a given separator and returns the new string array.
      */
     char** (*split)(const char* string, const char* delimiter, size_t* count);
+    /**
+     * Generate a random string with a given length and returns the new string.
+     */
+    char* (*random)(size_t length, const char* charset);
 } String = {
     .format = __String_format,
     .trim = __String_trim,
@@ -295,6 +317,7 @@ struct {
     .reverse = __String_reverse,
     .pad = __String_pad,
     .split = __String_split,
+    .random = __String_random,
 };
 
 #endif  // __CIMPLE_UTILS_STR_H
